@@ -1,0 +1,66 @@
+Name     TDI;
+PartNo   00 ;
+Date     16/11/2024 ;
+Revision 01 ;
+Designer Engineer ;
+Company  UPM ;
+Assembly None ;
+Location  ;
+Device   G22V10 ;
+
+/* *************** INPUT PINS *********************/
+PIN  1   =      CLK              ; /*                                 */ 
+PIN  2   =      C1                ; /*                                 */ 
+PIN  3   =      A1                ; /*                                 */ 
+PIN  4   =      C2                ; /*                                 */ 
+PIN  5   =      A2                ; /*                                 */ 
+PIN  6   =      C4                ; /*                                 */ 
+PIN  7   =      A4                ; /*                                 */ 
+PIN  8   =      B1                ; /*                                 */ 
+PIN  9   =      D1                ; /*                                 */ 
+PIN  10 =      B2                ; /*                                 */ 
+PIN  11 =      D2                ; /*                                 */ 
+PIN  13 =      B4                ; /*                                 */ 
+PIN  14 =      D4                ; /*                                 */ 
+
+/* *************** OUTPUT PINS *********************/
+PIN  15   =    Q0                 ; /*                                 */ 
+PIN  16   =    Q1                 ; /*                                 */ 
+PIN  17   =    Q2                 ; /*                                 */ 
+PIN  18   =    Q3                 ; /*                                 */ 
+PIN  19   =    Q4                 ; /*                                 */ 
+PIN  20   =    Q5                 ; /*                                 */ 
+PIN  21   =    Z                    ; /* Solo puede estar aqui on en 16, por el numero de terminos     */ 
+
+Q0.d = !Q0;
+
+Q1.d = !Q1 & Q0 
+         # Q1 & !Q0; 
+
+Q2.d = !Q2 & Q1 & Q0 & !Q5 /* Ojo al Q5 (cambia frente un contador normal) */ 
+        # Q2 & ( !Q1 # !Q0 );
+
+Q3.d = !Q3 & Q2 & Q1 & Q0  
+        # Q3 & ( !Q2 # !Q1 # !Q0 ); 
+
+Q4.d = !Q4 & Q3 & Q2 & Q1 & Q0
+        # Q4 & ( !Q3 # !Q2 # !Q1 # !Q0 );
+         
+Q5.d = !Q5 & Q4 & Q3 & Q2 & Q1 & Q0
+        # Q5 & ( !Q0 # !Q1 );   /* Ojo al segundo OR(cambia frente un contador normal, truncado) */ 
+
+NUM_2   = !Q0 & Q1 & !Q2 & !Q3 & !Q4 & !Q5; 
+NUM_5    =  Q0 & !Q1 & Q2 & !Q3 & !Q4 & !Q5;
+NUM_8   = !Q0 & !Q1 & !Q2 & Q3 & !Q4 & !Q5;
+NUM_11  =   Q0 & Q1 & !Q2 & Q3 & !Q4 & !Q5; 
+NUM_14  =  !Q0 & Q1 & Q2 & Q3 & !Q4 & !Q5;
+NUM_17 =  Q0 & !Q1 & !Q2 & !Q3 & Q4 & !Q5;
+NUM_20 = !Q0 & !Q1 & Q2 & !Q3 & Q4 & !Q5;
+NUM_23 =  Q0 & Q1 & Q2 & !Q3 & Q4 & !Q5; 
+NUM_26 = !Q0 & Q1 & !Q2 & Q3 & Q4 & !Q5;
+NUM_29 = Q0 & !Q1 & Q2 & Q3 & Q4 & !Q5;
+NUM_32  = !Q0 & !Q1 & !Q2 & !Q3 & !Q4 & Q5;
+NUM_35  = Q0 & Q1 & !Q2 & !Q3 & !Q4 & Q5; 
+
+Z.d = C1 & NUM_2 # A1 & NUM_5 # C2 & NUM_8  # A2 & NUM_11 # C4 & NUM_14 # A4 & NUM_17 
+     # B1 & NUM_20 # D1 & NUM_23 # B2 & NUM_26 # D2 & NUM_29 # B4 & NUM_32 # D4 & NUM_35;
