@@ -24,20 +24,20 @@ PIN  13 =      B4                ; /*                                 */
 PIN  14 =      D4                ; /*                                 */ 
 
 /* *************** OUTPUT PINS *********************/
-PIN  15   =    Q0                 ; /*                                 */ 
-PIN  16   =    Q1                 ; /*                                 */ 
-PIN  17   =    Q2                 ; /*                                 */ 
-PIN  18   =    Q3                 ; /*                                 */ 
-PIN  19   =    Q4                 ; /*                                 */ 
-PIN  20   =    Q5                 ; /*                                 */ 
-PIN  21   =    Z                    ; /* Solo puede estar aqui on en 16, por el numero de terminos     */ 
+PIN  17   =    Q0                 ; /*                                 */ 
+PIN  23   =    Q1                 ; /*                                 */ 
+PIN  22   =    Q2                 ; /*                                 */ 
+PIN  21   =    Q3                 ; /*                                 */ 
+PIN  20  =    Q4                 ; /*                                 */ 
+PIN  19   =    Q5                 ; /*                                 */ 
+PIN  18   =    Z                    ; 
 
 Q0.d = !Q0;
 
 Q1.d = !Q1 & Q0 
          # Q1 & !Q0; 
 
-Q2.d = !Q2 & Q1 & Q0 & !Q5 /* Ojo al Q5 (cambia frente un contador normal) */ 
+Q2.d = !Q2 & Q1 & Q0
         # Q2 & ( !Q1 # !Q0 );
 
 Q3.d = !Q3 & Q2 & Q1 & Q0  
@@ -47,20 +47,27 @@ Q4.d = !Q4 & Q3 & Q2 & Q1 & Q0
         # Q4 & ( !Q3 # !Q2 # !Q1 # !Q0 );
          
 Q5.d = !Q5 & Q4 & Q3 & Q2 & Q1 & Q0
-        # Q5 & ( !Q0 # !Q1 );   /* Ojo al segundo OR(cambia frente un contador normal, truncado) */ 
+        # Q5 & ( !Q0 # !Q1 # !Q2 # !Q3 # !Q4 );   /* Ojo al los OR */
 
-NUM_2   = !Q0 & Q1 & !Q2 & !Q3 & !Q4 & !Q5; 
-NUM_5   =  Q0 & !Q1 & Q2 & !Q3 & !Q4 & !Q5;
-NUM_8   = !Q0 & !Q1 & !Q2 & Q3 & !Q4 & !Q5;
-NUM_11  =  Q0 & Q1 & !Q2 & Q3 & !Q4 & !Q5; 
-NUM_14  = !Q0 & Q1 & Q2 & Q3 & !Q4 & !Q5;
-NUM_17  =  Q0 & !Q1 & !Q2 & !Q3 & Q4 & !Q5;
-NUM_20  = !Q0 & !Q1 & Q2 & !Q3 & Q4 & !Q5;
-NUM_23  =  Q0 & Q1 & Q2 & !Q3 & Q4 & !Q5; 
-NUM_26  = !Q0 & Q1 & !Q2 & Q3 & Q4 & !Q5;
-NUM_29  =  Q0 & !Q1 & Q2 & Q3 & Q4 & !Q5;
-NUM_32  = !Q0 & !Q1 & !Q2 & !Q3 & !Q4 & Q5;
-NUM_35  =  Q0 & Q1 & !Q2 & !Q3 & !Q4 & Q5; 
+NUM_0 = !Q5 & !Q4 & !Q3 & !Q2 & !Q1 & !Q0;
+NUM_3 = !Q5 & !Q4 & !Q3 & !Q2 & Q1 & Q0;
+NUM_6 = !Q5 & !Q4 & !Q3 & Q2 & Q1 & !Q0;
+NUM_9 = !Q5 & !Q4 & Q3 & !Q2 & !Q1 & Q0;
+NUM_12 = !Q5 & !Q4 & Q3 & Q2 & !Q1 & !Q0;
+NUM_15 = !Q5 & !Q4 & Q3 & Q2 & Q1 & Q0;
+NUM_18 = !Q5 & Q4 & !Q3 & !Q2 & Q1 & !Q0;
+NUM_21 = !Q5 & Q4 & !Q3 & Q2 & !Q1 & Q0; /* X */
+NUM_24 = !Q5 & Q4 & Q3 & !Q2 & !Q1 & !Q0;
+NUM_27 = !Q5 & Q4 & Q3 & !Q2 & Q1 & Q0;
+NUM_30 = !Q5 & Q4 & Q3 & Q2 & Q1 & !Q0;
+NUM_33 = Q5 & !Q4 & !Q3 & !Q2 & !Q1 & Q0;
+NUM_36 = Q5 & !Q4 & !Q3 & Q2 & !Q1 & !Q0;
+NUM_39 = Q5 & !Q4 & !Q3 & Q2 & Q1 & Q0;
+NUM_42 = Q5 & !Q4 & Q3 & !Q2 & Q1 & !Q0;
 
-Z.d = C1 & NUM_2 # A1 & NUM_5 # C2 & NUM_8 # A2 & NUM_11 # C4 & NUM_14 # A4 & NUM_17 
-     # B1 & NUM_20 # D1 & NUM_23 # B2 & NUM_26 # D2 & NUM_29 # B4 & NUM_32 # D4 & NUM_35;
+Z.d = NUM_0 /* F1 */ 
+       # NUM_3 & C1 # NUM_6 & A1 # NUM_9 & C2 # NUM_12 & A2 # NUM_15 & C4 # NUM_18 & A4 
+       # NUM_24 & B1 # NUM_27 & D1 # NUM_30 & B2 # NUM_33 & D2 # NUM_36 & B4 # NUM_39 & D4 
+       # NUM_42; /* F2 */
+       
+
