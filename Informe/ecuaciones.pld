@@ -1,0 +1,83 @@
+Name     TDI;
+PartNo   00 ;
+Date     16/11/2024 ;
+Revision 01 ;
+Designer Grupo12 ;
+Company  UPM ;
+Assembly None ;
+Location  ;
+Device   G22V10 ;
+
+/* *************** INPUT PINS *********************/
+PIN  1   =     CLK              ; /*                                 */ 
+PIN  2   =     C1                ; /*                                 */ 
+PIN  3   =     A1                ; /*                                 */ 
+PIN  4   =     C2                ; /*                                 */ 
+PIN  5   =     A2                ; /*                                 */ 
+PIN  6   =     C4                ; /*                                 */ 
+PIN  7   =     A4                ; /*                                 */ 
+PIN  8   =     B1                ; /*                                 */ 
+PIN  9   =     D1                ; /*                                 */ 
+PIN  10 =      B2                ; /*                                 */ 
+PIN  11 =      D2                ; /*                                 */ 
+PIN  13 =      B4                ; /*                                 */ 
+PIN  14 =      D4                ; /*                                 */ 
+
+/* *************** OUTPUT PINS *********************/
+PIN  15   =    Q0                 ; /*                                 */ 
+PIN  16   =    Q1                 ; /*                                 */ 
+PIN  17   =    Q2                 ; /*                                 */ 
+PIN  19   =    Q3                 ; /*                                 */ 
+PIN  20  =     Q4                 ; /*                                 */ 
+PIN  21   =    Q5                 ; /*                                 */ 
+PIN  22   =    Q6                 ; /*                                 */
+PIN  23   =    Q7                 ; /*                                 */ 
+
+PIN  18   =    Z                    ; 
+
+Q0.d = !Q0;
+
+Q1.d = !Q1 & Q0 
+         # Q1 & !Q0; 
+
+Q2.d = !Q2 & Q1 & Q0
+        # Q2 & ( !Q1 # !Q0 );
+
+Q3.d = !Q3 & Q2 & Q1 & Q0  
+        # Q3 & ( !Q2 # !Q1 # !Q0 ); 
+
+Q4.d = !Q4 & Q3 & Q2 & Q1 & Q0
+        # Q4 & ( !Q3 # !Q2 # !Q1 # !Q0 );
+         
+Q5.d = !Q5 & Q4 & Q3 & Q2 & Q1 & Q0
+        # Q5 & ( !Q0 # !Q1 # !Q2 # !Q3 # !Q4 );  
+
+Q6.d = !Q6 & Q5 & Q4 & Q3 & Q2 & Q1 & Q0
+            # Q6 & ( !Q0 # !Q1 # !Q2 # !Q3 # !Q4 # !Q5 ); 
+
+Q7.d = !Q7 & Q6 & Q5 & Q4 & Q3 & Q2 & Q1 & Q0
+            # Q7 & ( !Q0 # !Q1 # !Q2 # !Q3 # !Q4 # !Q5 # !Q6); 
+
+
+
+NUM_0 = !Q7 & !Q6 & !Q5 & !Q4 & !Q3 & !Q2 & !Q1 & !Q0;
+NUM_3 =  !Q7 & !Q6 &  !Q5 & !Q4 & !Q3 & !Q2 & Q1 & Q0;
+NUM_6 =  !Q7 & !Q6 &  !Q5 & !Q4 & !Q3 & Q2 & Q1 & !Q0;
+NUM_9 =  !Q7 & !Q6 &  !Q5 & !Q4 & Q3 & !Q2 & !Q1 & Q0;
+NUM_12 =  !Q7 & !Q6 &  !Q5 & !Q4 & Q3 & Q2 & !Q1 & !Q0;
+NUM_15 =  !Q7 & !Q6 &  !Q5 & !Q4 & Q3 & Q2 & Q1 & Q0;
+NUM_18 =  !Q7 & !Q6 &  !Q5 & Q4 & !Q3 & !Q2 & Q1 & !Q0;
+NUM_21 = !Q7 & !Q6 &  !Q5 & Q4 & !Q3 & Q2 & !Q1 & Q0; /* X */
+NUM_24 = !Q7 & !Q6 &  !Q5 & Q4 & Q3 & !Q2 & !Q1 & !Q0;
+NUM_27 = !Q7 & !Q6 &  !Q5 & Q4 & Q3 & !Q2 & Q1 & Q0;
+NUM_30 = !Q7 & !Q6 &  !Q5 & Q4 & Q3 & Q2 & Q1 & !Q0;
+NUM_33 = !Q7 & !Q6 &  Q5 & !Q4 & !Q3 & !Q2 & !Q1 & Q0;
+NUM_36 = !Q7 & !Q6 &  Q5 & !Q4 & !Q3 & Q2 & !Q1 & !Q0;
+NUM_39 = !Q7 & !Q6 &  Q5 & !Q4 & !Q3 & Q2 & Q1 & Q0;
+NUM_42 = !Q7 & !Q6 &  Q5 & !Q4 & Q3 & !Q2 & Q1 & !Q0;
+
+Z.d = NUM_0 /* F1 */ 
+       # NUM_3 & C1 # NUM_6 & A1 # NUM_9 & C2 # NUM_12 & A2 # NUM_15 & C4 # NUM_18 & A4 
+       # NUM_24 & B1 # NUM_27 & D1 # NUM_30 & B2 # NUM_33 & D2 # NUM_36 & B4 # NUM_39 & D4 
+       # NUM_42; /* F2 */
+       

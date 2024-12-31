@@ -1,0 +1,27 @@
+\section*{Ecuaciones}
+El código está disponible en GitHub (\textcolor{blue}{\href{https://github.com/IvanMoyaO/SQUAWK-GAL}{https://github.com/IvanMoyaO/SQUAWK-GAL}}) y en las siguientes páginas. 
+
+La estructura del código es la siguiente:
+\begin{itemize}
+    \item \textbf{Cabecera y declaración de entradas y salidas}: en las primeras 36 líneas, se establece la cabecera del programa (con información como la fecha o el dispositivo) y se declaran qué pines se usarán como entradas/salidas y qué variable tendrán asignada. Nótese que la variable los pulsos, $Z$, se asigna al pin 18 en concreto debido al número de términos que tiene.
+    \item \textbf{Ecuaciones del contador}: entre las líneas 38 y 58 se realizan las ecuaciones de un contador sencillo, sin truncar y que cuenta todos lo números.
+    \item \textbf{Variables intermedias}: entre las líneas 63 y 77 se declaran una serie de variables intermedias que corresponden a los instantes en los que habrá un pulso. Esta parte no es necesaria, sin embargo, consideramos que favorece enormemente la legibilidad.
+    \item \textbf{Salida}: en la línea 79 se establece el valor (1 ó 0) de la salida. Solo se activará en determinados instantes si, y solo si, el correspondiente microinterruptor está activo.
+\end{itemize}
+
+\begin{cuidado}{Errores que cometimos}
+En la primera versión del código, \textcolor{blue}{\href{https://github.com/IvanMoyaO/SQUAWK-GAL/commit/ac02036bc24f1b977cd46d78ace5171c46c0033c}{como puede verse en GitHub}}, los pulsos que generamos no se asemejaban a un código SQUAWK debido a que faltaba $X$, $F_1$ y $F_2$.
+
+\textcolor{blue}{\href{https://github.com/IvanMoyaO/SQUAWK-GAL/commit/d1294f0a59ebac4c123ad7443a96185edbf2dbca}{Una versión posterior}} añadió dichos pulsos, pero seguía siendo incorrecta al no dejar un <<\textit{tiempo muerto}>> tras $F_2$. \textcolor{blue}{\href{https://github.com/IvanMoyaO/SQUAWK-GAL/commit/8cf73270ac348ffd79384d2d9c017e38601c2216}{Los cambios que introdujo definitiva pueden verse en GitHub}}.
+
+\end{cuidado}
+
+El código/ecuaciones se recoge a continuación:
+
+\lstset{inputencoding=utf8/latin1}
+\lstinputlisting[
+frame=single,
+numbers=left,
+breaklines=true
+]{ecuaciones.pld}
+
