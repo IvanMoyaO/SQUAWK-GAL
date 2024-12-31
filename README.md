@@ -1,1 +1,1 @@
-Pŕacita TDI grupo 12
+Práctica TDI Grupo 12.
